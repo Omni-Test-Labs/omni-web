@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { Form, Input, Button, Card, Typography, Divider, message } from 'antd';
 import { UserOutlined, LockOutlined, GithubOutlined, GitlabOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import { apiService } from '../services/api';
-import { api } from '../config/api';
+import { api } from '../services/api';
+import { apiConfig } from '../config/api';
 
 const { Title, Text } = Typography;
 
@@ -19,20 +19,17 @@ const LoginPage: React.FC = () => {
   const handleLogin = async (values: LoginFormData) => {
     setLoading(true);
     try {
-      const response = await apiService.post(api.auth.login, values);
+      const response = await api.post(apiConfig.auth.login, values) as {access_token: string; refresh_token: string};
 
-      if (response.success && response.data) {
+      if (response.access_token) {
         message.success('Login successful!');
 
-        // TODO: Set user and tokens in auth store
-        // const { user, access_token, refresh_token } = response.data;
-        // useAuthStore.getState().setUser(user);
-        // useAuthStore.getState().setTokens(access_token, refresh_token);
+        localStorage.setItem('access_token', response.access_token);
+        localStorage.setItem('refresh_token', response.refresh_token);
 
-        // Redirect to dashboard
-        navigate('/dashboard');
+        navigate('/');
       } else {
-        message.error(response.message || 'Login failed');
+        message.error('Login failed');
       }
     } catch (error) {
       message.error('An error occurred during login');
@@ -42,13 +39,11 @@ const LoginPage: React.FC = () => {
   };
 
   const handleGitHubLogin = () => {
-    // Redirect to GitHub OAuth
-    window.location.href = api.auth.github;
+    window.location.href = apiConfig.auth.github;
   };
 
   const handleGitLabLogin = () => {
-    // Redirect to GitLab OAuth
-    window.location.href = api.auth.gitlab;
+    window.location.href = apiConfig.auth.gitlab;
   };
 
   return (
