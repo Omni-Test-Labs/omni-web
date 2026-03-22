@@ -17,21 +17,27 @@ vi.mock('antd', async (importOriginal) => {
   };
 });
 
-vi.mock('../services/api', () => ({
-  post: vi.fn(),
-}));
+vi.mock('../services/api', async () => {
+  return {
+    api: {
+      post: vi.fn(),
+    },
+    post: vi.fn(),
+  };
+});
 
 describe('LoginPage', () => {
   let mockApi: any;
+
   beforeAll(() => {
     expect.extend({});
   });
 
   beforeEach(async () => {
-    // Import mocked module
-    const apiModule = await import('../services/api');
-    mockApi = apiModule.post;
     vi.clearAllMocks();
+    const apiModule = await import('../services/api');
+    // The mocked module has both 'api' and 'post' exports
+    mockApi = apiModule.api || apiModule.post || vi.fn();
   });
 
   const renderLoginPage = () => {
