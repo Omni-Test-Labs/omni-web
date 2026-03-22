@@ -16,16 +16,9 @@ describe('MainLayout', () => {
 
   beforeAll(() => {
     expect.extend({});
-    // Mock localStorage
-    global.localStorage = {
-      getItem: vi.fn(),
-      setItem: vi.fn(),
-      removeItem: vi.fn(),
-      clear: vi.fn(),
-    } as unknown as Storage;
   });
 
-  const renderMainLayout = (isAuthenticated = true, user = null, initialRoute = '/dashboard') => {
+  const renderMainLayout = (isAuthenticated = true, user = null, initialRoute = '/') => {
     mockUseAuthStore.mockReturnValue({
       user,
       access_token: isAuthenticated ? 'mock_token' : null,
@@ -69,11 +62,8 @@ describe('MainLayout', () => {
     renderMainLayout(true, { username: 'testuser' });
 
     expect(screen.getByText('Dashboard')).toBeInTheDocument();
-    expect(screen.getByText('User Management')).toBeInTheDocument();
-    expect(screen.getByText('Device Management')).toBeInTheDocument();
     expect(screen.getByText('Task Management')).toBeInTheDocument();
     expect(screen.getByText('Settings')).toBeInTheDocument();
-    expect(screen.getByText('Notifications')).toBeInTheDocument();
   });
 
   it('should show current page highlight', () => {

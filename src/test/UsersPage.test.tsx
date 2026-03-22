@@ -1,12 +1,33 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import UsersPage from '../pages/UsersPage';
 
-vi.mock('../../services/api');
-vi.mock('../../stores/authStore');
+vi.mock('../services/dashboardApi', () => ({
+  apiService: {
+    users: {
+      list: vi.fn().mockResolvedValue({
+        users: [],
+        total: 0,
+      }),
+    },
+  },
+  api: vi.fn(),
+}));
+
+vi.mock('../stores/authStore', () => ({
+  useAuthStore: vi.fn(() => ({
+    isAuthenticated: true,
+    user: { username: 'testuser' },
+    logout: vi.fn(),
+  })),
+}));
+
+beforeEach(() => {
+  vi.clearAllMocks();
+});
 
 describe('Users Page', () => {
   it('should render users page title', () => {

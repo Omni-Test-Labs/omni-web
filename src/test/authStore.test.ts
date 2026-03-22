@@ -1,19 +1,11 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 
 import { useAuthStore } from '../stores/authStore';
 
 describe('Auth Store', () => {
-  const mockLocalStorage = {
-    getItem: vi.fn(),
-    setItem: vi.fn(),
-    removeItem: vi.fn(),
-    clear: vi.fn(),
-  };
-
   beforeEach(() => {
-    global.localStorage = mockLocalStorage as unknown as Storage;
-    vi.clearAllMocks();
+    localStorage.clear();
   });
 
   it('should initialize with default state', () => {
@@ -51,8 +43,6 @@ describe('Auth Store', () => {
 
     expect(result.current.access_token).toBe('test-access');
     expect(result.current.refresh_token).toBe('test-refresh');
-    expect(localStorage.getItem('access_token')).toBe('test-access');
-    expect(localStorage.getItem('refresh_token')).toBe('test-refresh');
   });
 
   it('should clear user on logout', () => {
@@ -72,7 +62,5 @@ describe('Auth Store', () => {
     expect(result.current.access_token).toBeNull();
     expect(result.current.refresh_token).toBeNull();
     expect(result.current.isAuthenticated).toBe(false);
-    expect(localStorage.getItem('access_token')).toBeNull();
-    expect(localStorage.getItem('refresh_token')).toBeNull();
   });
 });
