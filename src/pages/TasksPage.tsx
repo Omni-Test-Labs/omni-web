@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Button, Table, Form, Input, Select, message, Tag, Modal, Drawer, Descriptions, Space, Card, Row, Col, Statistic, Progress } from 'antd';
+import { Button, Table, Form, Input, Select, message, Tag, Modal, Drawer, Descriptions, Space, Card, Row, Col, Statistic, Progress, Divider } from 'antd';
 import { PlusOutlined, EyeOutlined, ReloadOutlined, CheckCircleOutlined, CloseCircleOutlined, ClockCircleOutlined } from '@ant-design/icons';
 import { apiService } from '../services/dashboardApi';
 import type { Task, TaskResult } from '../types';
+import RCAViewer from '../components/RCAViewer';
 
 export default function TasksPage() {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -324,6 +325,10 @@ export default function TasksPage() {
                 )}
               </Card>
             )}
+
+            <Divider />
+
+            <RCAViewer taskId={selectedTask.task_id} taskStatus={selectedTask.result?.status} />
           </div>
         )}
       </Drawer>

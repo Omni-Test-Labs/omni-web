@@ -38,6 +38,23 @@ export interface TaskResult {
   ai_rca?: Record<string, unknown> | null;
 }
 
+export interface RCAResult {
+  rca: {
+    root_cause: string;
+    confidence: number;
+    severity: string;
+    findings: string[];
+    recommendations: string[];
+    cache_hit: boolean;
+    llm_provider: string;
+    llm_model: string;
+    duration_ms: number;
+    input_tokens: number;
+    output_tokens: number;
+    total_tokens: number;
+  };
+}
+
 export interface TaskStats {
   total: number;
   pending: number;

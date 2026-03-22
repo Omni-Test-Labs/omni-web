@@ -1,5 +1,5 @@
 import { api } from './api';
-import type { Task, Device, User, UserListResponse, DashboardStats } from '../types';
+import type { Task, Device, User, UserListResponse, DashboardStats, RCAResult } from '../types';
 
 export const apiService = {
   tasks: {
@@ -23,6 +23,18 @@ export const apiService = {
 
     async uploadResult(taskId: string, result: unknown): Promise<unknown> {
       return api.post(`/api/v1/tasks/${taskId}/result`, result);
+    },
+
+    async getRCA(taskId: string): Promise<RCAResult> {
+      return api.get<RCAResult>(`/api/v1/tasks/${taskId}/rca`);
+    },
+
+    async triggerRCA(taskId: string, forceRefresh = false): Promise<RCAResult> {
+      return api.post<RCAResult>(`/api/v1/tasks/${taskId}/rca`, { force_refresh: forceRefresh });
+    },
+
+    async getRCAStatus(taskId: string): Promise<{ rca_enabled: boolean; rca_available: boolean; analyzed_at?: string }> {
+      return api.get(`/api/v1/tasks/${taskId}/rca/status`);
     },
 
     async getStats(): Promise<DashboardStats> {
