@@ -20,27 +20,27 @@ export const apiConfig = {
 
   // Devices
   devices: {
-    list: `${API_BASE_URL}/api/devices`,
-    create: `${API_BASE_URL}/api/devices`,
-    get: (id: string) => `${API_BASE_URL}/api/devices/${id}`,
-    update: (id: string) => `${API_BASE_URL}/api/devices/${id}`,
-    delete: (id: string) => `${API_BASE_URL}/api/devices/${id}`,
-    heartbeat: (id: string) => `${API_BASE_URL}/api/devices/${id}/heartbeat`,
-    status: (id: string) => `${API_BASE_URL}/api/devices/${id}/status`,
+    list: `${API_BASE_URL}/api/v1/devices`,
+    create: `${API_BASE_URL}/api/v1/devices`,
+    get: (id: string) => `${API_BASE_URL}/api/v1/devices/${id}`,
+    update: (id: string) => `${API_BASE_URL}/api/v1/devices/${id}`,
+    delete: (id: string) => `${API_BASE_URL}/api/v1/devices/${id}`,
+    heartbeat: (id: string) => `${API_BASE_URL}/api/v1/devices/${id}/heartbeat`,
+    status: (id: string) => `${API_BASE_URL}/api/v1/devices/${id}/status`,
   },
 
   // Tasks
   tasks: {
-    list: `${API_BASE_URL}/api/tasks`,
-    create: `${API_BASE_URL}/api/tasks`,
-    get: (id: string) => `${API_BASE_URL}/api/tasks/${id}`,
-    update: (id: string) => `${API_BASE_URL}/api/tasks/${id}`,
-    delete: (id: string) => `${API_BASE_URL}/api/tasks/${id}`,
-    execute: (id: string) => `${API_BASE_URL}/api/tasks/${id}/execute`,
-    schedule: (id: string) => `${API_BASE_URL}/api/tasks/${id}/schedule`,
-    assign: (id: string) => `${API_BASE_URL}/api/tasks/${id}/assign`,
-    result: (id: string) => `${API_BASE_URL}/api/tasks/${id}/result`,
-    executions: (id: string) => `${API_BASE_URL}/api/tasks/${id}/executions`,
+    list: `${API_BASE_URL}/api/v1/tasks`,
+    create: `${API_BASE_URL}/api/v1/tasks`,
+    get: (id: string) => `${API_BASE_URL}/api/v1/tasks/${id}`,
+    update: (id: string) => `${API_BASE_URL}/api/v1/tasks/${id}`,
+    delete: (id: string) => `${API_BASE_URL}/api/v1/tasks/${id}`,
+    execute: (id: string) => `${API_BASE_URL}/api/v1/tasks/${id}/execute`,
+    schedule: (id: string) => `${API_BASE_URL}/api/v1/tasks/${id}/schedule`,
+    assign: (id: string) => `${API_BASE_URL}/api/v1/tasks/${id}/assign`,
+    result: (id: string) => `${API_BASE_URL}/api/v1/tasks/${id}/result`,
+    executions: (id: string) => `${API_BASE_URL}/api/v1/tasks/${id}/executions`,
   },
 
   // Applications (Test Objects)
