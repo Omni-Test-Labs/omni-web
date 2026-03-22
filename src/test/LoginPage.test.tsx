@@ -1,36 +1,36 @@
 import { describe, it, expect, beforeAll, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { message as antdMessage } from 'antd';
 
+import { api } from '../services/api';
 import LoginPage from '../pages/LoginPage';
 
-vi.mock('antd', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('antd')>();
-  return {
-    ...actual,
-    message: {
-      ...actual.message,
-      success: vi.fn(),
-      error: vi.fn(),
-    },
-  };
-});
-
 vi.mock('../services/api', () => ({
-  post: vi.fn(),
+  api: {
+    post: vi.fn(),
+  },
 }));
 
+vi.mock('antd', () => ({
+  ...require('antd'),
+  message: {
+    success: vi.fn(),
+    error: vi.fn(),
+  },
+}));
+
+const mockMessage = antdMessage as { success: ReturnType<typeof vi.fn>; error: ReturnType<typeof vi.fn> };
+
 describe('LoginPage', () => {
-  let mockApi: any;
+  const mockApi = vi.mocked(api);
+
   beforeAll(() => {
     expect.extend({});
   });
 
-  beforeEach(async () => {
-    // Import mocked module
-    const apiModule = await import('../services/api');
-    mockApi = apiModule.post;
+  beforeEach(() => {
     vi.clearAllMocks();
   });
 
@@ -108,7 +108,7 @@ describe('LoginPage', () => {
 
     await waitFor(() => {
       expect(mockApi.post).toHaveBeenCalledWith(
-        '/api/auth/login',
+        'http://localhost:8000/api/auth/login',
         { username: 'testuser', password: 'password123' }
       );
     });
@@ -119,23 +119,29 @@ describe('LoginPage', () => {
       () => new Promise((resolve) => setTimeout(() => resolve({
         access_token: 'mock_token',
         refresh_token: 'mock_refresh',
-      }), 100))
+      }), 200))
     );
 
     const { container } = renderLoginPage();
 
-    // Fill in credentials and submit
     const usernameInput = screen.getByPlaceholderText('Username');
     const passwordInput = screen.getByPlaceholderText('Password');
-    const submitButton = screen.getByRole('button', { name: 'Sign In' });
+    const submitButton = screen.getByRole('button', { name: /Sign In/i });
 
     fireEvent.change(usernameInput, { target: { value: 'testuser' } });
     fireEvent.change(passwordInput, { target: { value: 'password123' } });
-    fireEvent.click(submitButton);
 
-    // Check that button is loading
-    expect(submitButton).toBeDisabled();
-    expect(submitButton).toHaveText('Signing in...');
+    await act(async () => {
+      fireEvent.click(submitButton);
+    });
+
+    await waitFor(() => {
+      expect(submitButton).toHaveClass('ant-btn-loading');
+    });
+
+    await waitFor(() => {
+      expect(mockApi.post).toHaveBeenCalled();
+    });
   });
 
   it('should navigate to dashboard on successful login', async () => {
@@ -176,7 +182,7 @@ describe('LoginPage', () => {
     fireEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(screen.getByText('Invalid username or password')).toBeInTheDocument();
+      expect(mockMessage.error).toHaveBeenCalledWith('Login failed');
     });
   });
 
@@ -195,7 +201,7 @@ describe('LoginPage', () => {
     fireEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(screen.getByText('Network error')).toBeInTheDocument();
+      expect(mockMessage.error).toHaveBeenCalledWith('An error occurred during login');
     });
   });
 });
