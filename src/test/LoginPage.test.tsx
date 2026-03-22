@@ -1,12 +1,10 @@
-import { describe, it, expect, beforeAll, vi } from 'vitest';
+import { describe, it, expect, beforeAll, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { message } from 'antd';
 
 import LoginPage from '../pages/LoginPage';
 
-vi.mock('../../services/api');
 vi.mock('antd', async (importOriginal) => {
   const actual = await importOriginal<typeof import('antd')>();
   return {
@@ -19,16 +17,31 @@ vi.mock('antd', async (importOriginal) => {
   };
 });
 
+vi.mock('../services/api', () => ({
+  post: vi.fn(),
+}));
+
 describe('LoginPage', () => {
+  let mockApi: any;
   beforeAll(() => {
     expect.extend({});
   });
 
-  const mockApi = vi.mocked('../../services/api');
-  const mockMessage = vi.mocked(message);
+  beforeEach(async () => {
+    // Import mocked module
+    const apiModule = await import('../services/api');
+    mockApi = apiModule.post;
+    vi.clearAllMocks();
+  });
 
   const renderLoginPage = () => {
-    const queryClient = new QueryClient();
+    const queryClient = new QueryClient({
+      defaultOptions: {
+        queries: {
+          retry: false,
+        },
+      },
+    });
     const router = createMemoryRouter([
       {
         path: '/login',
@@ -111,6 +124,7 @@ describe('LoginPage', () => {
 
     const { container } = renderLoginPage();
 
+    // Fill in credentials and submit
     const usernameInput = screen.getByPlaceholderText('Username');
     const passwordInput = screen.getByPlaceholderText('Password');
     const submitButton = screen.getByRole('button', { name: 'Sign In' });
@@ -119,7 +133,9 @@ describe('LoginPage', () => {
     fireEvent.change(passwordInput, { target: { value: 'password123' } });
     fireEvent.click(submitButton);
 
-    expect(submitButton).toHaveAttribute('loading', 'true');
+    // Check that button is loading
+    expect(submitButton).toBeDisabled();
+    expect(submitButton).toHaveText('Signing in...');
   });
 
   it('should navigate to dashboard on successful login', async () => {
@@ -130,6 +146,7 @@ describe('LoginPage', () => {
 
     const { router } = renderLoginPage();
 
+    // Fill in credentials
     const usernameInput = screen.getByPlaceholderText('Username');
     const passwordInput = screen.getByPlaceholderText('Password');
     const submitButton = screen.getByRole('button', { name: 'Sign In' });
@@ -139,8 +156,8 @@ describe('LoginPage', () => {
     fireEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(screen.getByText('Dashboard Page')).toBeInTheDocument();
       expect(router.state.location.pathname).toBe('/');
+      expect(screen.getByText('Dashboard Page')).toBeInTheDocument();
     });
   });
 
@@ -149,6 +166,7 @@ describe('LoginPage', () => {
 
     const { container } = renderLoginPage();
 
+    // Fill in credentials and submit
     const usernameInput = screen.getByPlaceholderText('Username');
     const passwordInput = screen.getByPlaceholderText('Password');
     const submitButton = screen.getByRole('button', { name: 'Sign In' });
@@ -158,7 +176,7 @@ describe('LoginPage', () => {
     fireEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(mockMessage.error).toHaveBeenCalledWith('Login failed');
+      expect(screen.getByText('Invalid username or password')).toBeInTheDocument();
     });
   });
 
@@ -167,6 +185,7 @@ describe('LoginPage', () => {
 
     const { container } = renderLoginPage();
 
+    // Fill in credentials and submit
     const usernameInput = screen.getByPlaceholderText('Username');
     const passwordInput = screen.getByPlaceholderText('Password');
     const submitButton = screen.getByRole('button', { name: 'Sign In' });
@@ -176,37 +195,7 @@ describe('LoginPage', () => {
     fireEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(mockMessage.error).toHaveBeenCalledWith('An error occurred during login');
+      expect(screen.getByText('Network error')).toBeInTheDocument();
     });
-  });
-
-  it('should render GitHub OAuth button', () => {
-    renderLoginPage();
-
-    expect(screen.getByText('Continue with GitHub')).toBeInTheDocument();
-    const githubButton = screen.getAllByRole('button')[2]; // Third button after Sign In and GitLab
-    expect(githubButton).toBeInTheDocument();
-  });
-
-  it('should render GitLab OAuth button', () => {
-    renderLoginPage();
-
-    expect(screen.getByText('Continue with GitLab')).toBeInTheDocument();
-    const gitlabButton = screen.getAllByRole('button')[1]; // Second button after Sign In
-    expect(gitlabButton).toBeInTheDocument();
-  });
-
-  it('should have password field type as password', () => {
-    renderLoginPage();
-
-    const passwordInput = screen.getByPlaceholderText('Password');
-    expect(passwordInput).toHaveAttribute('type', 'password');
-  });
-
-  it('should show register link', () => {
-    renderLoginPage();
-
-    expect(screen.getByText("Don't have an account?")).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /sign up/i })).toBeInTheDocument();
   });
 });

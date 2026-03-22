@@ -245,7 +245,6 @@ describe('ApiService', () => {
       const mockWindow = { location: { href: '' } };
       global.window = mockWindow as any;
 
-      const api = (await import('../services/api')).api;
 
       const mockAxiosInstance = {
         get: vi.fn().mockRejectedValue({
@@ -287,7 +286,6 @@ describe('ApiService', () => {
       const mockWindow = { location: { href: '' } };
       global.window = mockWindow as any;
 
-      const api = (await import('../services/api')).api;
 
       const mockAxiosInstance = {
         get: vi.fn(),
@@ -316,7 +314,6 @@ describe('ApiService', () => {
       const mockWindow = { location: { href: '' } };
       global.window = mockWindow as any;
 
-      const api = (await import('../services/api')).api;
 
       const mockAxiosInstance = {
         get: vi.fn(),
