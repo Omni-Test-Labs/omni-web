@@ -22,20 +22,20 @@ describe('API Configuration', () => {
   });
 
   it('should have devices endpoints', () => {
-    expect(apiConfig.devices.list).toBe('http://localhost:8000/api/devices');
-    expect(apiConfig.devices.create).toBe('http://localhost:8000/api/devices');
-    expect(apiConfig.devices.get('123')).toBe('http://localhost:8000/api/devices/123');
-    expect(apiConfig.devices.update('456')).toBe('http://localhost:8000/api/devices/456');
-    expect(apiConfig.devices.delete('789')).toBe('http://localhost:8000/api/devices/789');
+    expect(apiConfig.devices.list).toBe('http://localhost:8000/api/v1/devices');
+    expect(apiConfig.devices.create).toBe('http://localhost:8000/api/v1/devices');
+    expect(apiConfig.devices.get('123')).toBe('http://localhost:8000/api/v1/devices/123');
+    expect(apiConfig.devices.update('456')).toBe('http://localhost:8000/api/v1/devices/456');
+    expect(apiConfig.devices.delete('789')).toBe('http://localhost:8000/api/v1/devices/789');
   });
 
   it('should have tasks endpoints', () => {
-    expect(apiConfig.tasks.list).toBe('http://localhost:8000/api/tasks');
-    expect(apiConfig.tasks.create).toBe('http://localhost:8000/api/tasks');
-    expect(apiConfig.tasks.get('101')).toBe('http://localhost:8000/api/tasks/101');
-    expect(apiConfig.tasks.update('202')).toBe('http://localhost:8000/api/tasks/202');
-    expect(apiConfig.tasks.delete('303')).toBe('http://localhost:8000/api/tasks/303');
-    expect(apiConfig.tasks.execute('404')).toBe('http://localhost:8000/api/tasks/404/execute');
+    expect(apiConfig.tasks.list).toBe('http://localhost:8000/api/v1/tasks');
+    expect(apiConfig.tasks.create).toBe('http://localhost:8000/api/v1/tasks');
+    expect(apiConfig.tasks.get('101')).toBe('http://localhost:8000/api/v1/tasks/101');
+    expect(apiConfig.tasks.update('202')).toBe('http://localhost:8000/api/v1/tasks/202');
+    expect(apiConfig.tasks.delete('303')).toBe('http://localhost:8000/api/v1/tasks/303');
+    expect(apiConfig.tasks.execute('404')).toBe('http://localhost:8000/api/v1/tasks/404/execute');
   });
 
   it('should have applications endpoints', () => {

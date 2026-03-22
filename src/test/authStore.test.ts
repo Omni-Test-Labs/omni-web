@@ -1,12 +1,19 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 
 import { useAuthStore } from '../stores/authStore';
 
 describe('Auth Store', () => {
+  const mockLocalStorage = {
+    getItem: vi.fn(),
+    setItem: vi.fn(),
+    removeItem: vi.fn(),
+    clear: vi.fn(),
+  };
+
   beforeEach(() => {
-    // Clear localStorage before each test
-    localStorage.clear();
+    global.localStorage = mockLocalStorage as unknown as Storage;
+    vi.clearAllMocks();
   });
 
   it('should initialize with default state', () => {

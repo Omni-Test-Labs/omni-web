@@ -3,9 +3,14 @@ import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   test: {
-    globals: true,
     environment: 'jsdom',
+    settings: {
+      jsdom: {
+        url: 'http://localhost:3000',
+      },
+    },
     setupFiles: ['./src/test/setup.ts'],
+    globals: true,
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
