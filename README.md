@@ -1,4 +1,6 @@
-# React + TypeScript + Vite
+# Omni-Web Frontend
+
+React + TypeScript + Vite frontend for Omni Test Platform.
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
@@ -41,6 +43,26 @@ export default defineConfig([
     },
   },
 ])
+  ```
+])
+
+## Testing
+
+- 测试数量: 39 个
+- 通过率: 100% ✅
+- 测试框架: Vitest
+- 测试库: @testing-library/react
+
+### 运行测试
+
+```bash
+npm test
+```
+
+### 运行所有测试（单次运行）
+
+```bash
+npm test -- --run
 ```
 
 You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
