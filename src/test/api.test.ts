@@ -116,7 +116,7 @@ describe('ApiService', () => {
       const mockResponse = { data: { deleted: true } };
       mockAxios.create.mockReturnValue({
         ...mockResponse,
-        interceptors: { request: use: vi.fn(), response: use: fn() }, response: { use: vi.fn() }
+        interceptors: { request: { use: vi.fn() }, response: { use: vi.fn() } }
       });
 
       const result = await api.delete('/api/endpoint');
@@ -149,8 +149,8 @@ describe('ApiService', () => {
 
     it('should add Content-Type header', async () => {
       mockAxios.create.mockReturnValue({
-        interceptors: { request: { use: vi.fn() }, response: { use: fn() }, response: { use: vi.fn() }
-      } });
+        interceptors: { request: { use: vi.fn() }, response: { use: vi.fn() } }
+      });
 
       await api.get('/api/test');
 
@@ -161,7 +161,7 @@ describe('ApiService', () => {
     it('should not add Authorization header when token is null', async () => {
       (global.localStorage.getItem as any).mockReturnValue(null);
       mockAxios.create.mockReturnValue({
-        interceptors: { request: { use: vi.fn() }, response: { use: fn() }, response: { use: vi.fn() } }
+        interceptors: { request: { use: vi.fn() }, response: { use: vi.fn() } }
       });
 
       await api.get('/api/test');
@@ -218,9 +218,6 @@ describe('ApiService', () => {
       const mockWindow = { location: { href: '' } } };
       global.window = mockWindow as any;
 
-      vi.mocked('../../services/api');
-      const api = (await import('../services/api')).api;
-
       const mockAxiosInstance = {
         get: vi.fn().mockRejectedValue({
           response: { status: 401 },
@@ -248,7 +245,6 @@ describe('ApiService', () => {
       const mockWindow = { location: { href: '' } };
       global.window = mockWindow as any;
 
-      vi.mocked('../../services/api');
       const api = (await import('../services/api')).api;
 
       const mockAxiosInstance = {
@@ -291,7 +287,6 @@ describe('ApiService', () => {
       const mockWindow = { location: { href: '' } };
       global.window = mockWindow as any;
 
-      vi.mocked('../../services/api');
       const api = (await import('../services/api')).api;
 
       const mockAxiosInstance = {
@@ -321,7 +316,6 @@ describe('ApiService', () => {
       const mockWindow = { location: { href: '' } };
       global.window = mockWindow as any;
 
-      vi.mocked('../../services/api');
       const api = (await import('../services/api')).api;
 
       const mockAxiosInstance = {
