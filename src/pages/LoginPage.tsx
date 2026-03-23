@@ -8,7 +8,7 @@ import { apiConfig } from '../config/api';
 const { Title, Text } = Typography;
 
 interface LoginFormData {
-  username: string;
+  identifier: string;
   password: string;
 }
 
@@ -61,12 +61,12 @@ const LoginPage: React.FC = () => {
           layout="vertical"
         >
           <Form.Item
-            name="username"
-            rules={[{ required: true, message: 'Please input your username!' }]}
+            name="identifier"
+            rules={[{ required: true, message: 'Please input your username or email!' }]}
           >
             <Input
               prefix={<UserOutlined />}
-              placeholder="Username"
+              placeholder="Username or Email"
               size="large"
             />
           </Form.Item>

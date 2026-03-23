@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Button, Table, message, Tag, Card, Row, Col, Statistic, Avatar, Space } from 'antd';
-import { PlusOutlined, ReloadOutlined, UserOutlined, ShieldCheckOutlined } from '@ant-design/icons';
+import { PlusOutlined, ReloadOutlined, UserOutlined, SafetyOutlined } from '@ant-design/icons';
 import { apiService } from '../services/dashboardApi';
 import type { User } from '../types';
 
@@ -65,7 +65,7 @@ export default function UsersPage() {
       dataIndex: 'role',
       key: 'role',
       render: (role: string) => (
-        <Tag icon={<ShieldCheckOutlined />} color={getRoleColor(role)}>
+        <Tag icon={<SafetyOutlined />} color={getRoleColor(role)}>
           {role}
         </Tag>
       ),
@@ -129,7 +129,7 @@ export default function UsersPage() {
             <Statistic
               title="Admin Users"
               value={adminUsers}
-              prefix={<ShieldCheckOutlined />}
+              prefix={<SafetyOutlined />}
               valueStyle={{ color: '#ff4d4f' }}
             />
           </Card>

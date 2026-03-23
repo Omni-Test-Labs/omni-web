@@ -71,7 +71,7 @@ describe('LoginPage', () => {
 
     expect(screen.getByText('Welcome Back')).toBeInTheDocument();
     expect(screen.getByText('Sign in to Omni Test Platform')).toBeInTheDocument();
-    expect(screen.getByPlaceholderText('Username')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Username or Email')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Password')).toBeInTheDocument();
     expect(screen.getByText('Sign In')).toBeInTheDocument();
   });
@@ -84,7 +84,7 @@ describe('LoginPage', () => {
     fireEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(screen.getByText('Please input your username!')).toBeInTheDocument();
+      expect(screen.getByText('Please input your username or email!')).toBeInTheDocument();
       expect(screen.getByText('Please input your password!')).toBeInTheDocument();
     });
   });
@@ -98,7 +98,7 @@ describe('LoginPage', () => {
     const { container } = renderLoginPage();
 
     // Fill in valid credentials
-    const usernameInput = screen.getByPlaceholderText('Username');
+    const usernameInput = screen.getByPlaceholderText('Username or Email');
     const passwordInput = screen.getByPlaceholderText('Password');
     const submitButton = screen.getByRole('button', { name: 'Sign In' });
 
@@ -109,7 +109,7 @@ describe('LoginPage', () => {
     await waitFor(() => {
       expect(mockApi.post).toHaveBeenCalledWith(
         'http://localhost:8000/api/auth/login',
-        { username: 'testuser', password: 'password123' }
+        { identifier: 'testuser', password: 'password123' }
       );
     });
   });
@@ -124,7 +124,7 @@ describe('LoginPage', () => {
 
     const { container } = renderLoginPage();
 
-    const usernameInput = screen.getByPlaceholderText('Username');
+    const usernameInput = screen.getByPlaceholderText('Username or Email');
     const passwordInput = screen.getByPlaceholderText('Password');
     const submitButton = screen.getByRole('button', { name: /Sign In/i });
 
@@ -153,7 +153,7 @@ describe('LoginPage', () => {
     const { router } = renderLoginPage();
 
     // Fill in credentials
-    const usernameInput = screen.getByPlaceholderText('Username');
+    const usernameInput = screen.getByPlaceholderText('Username or Email');
     const passwordInput = screen.getByPlaceholderText('Password');
     const submitButton = screen.getByRole('button', { name: 'Sign In' });
 
@@ -173,7 +173,7 @@ describe('LoginPage', () => {
     const { container } = renderLoginPage();
 
     // Fill in credentials and submit
-    const usernameInput = screen.getByPlaceholderText('Username');
+    const usernameInput = screen.getByPlaceholderText('Username or Email');
     const passwordInput = screen.getByPlaceholderText('Password');
     const submitButton = screen.getByRole('button', { name: 'Sign In' });
 
@@ -192,7 +192,7 @@ describe('LoginPage', () => {
     const { container } = renderLoginPage();
 
     // Fill in credentials and submit
-    const usernameInput = screen.getByPlaceholderText('Username');
+    const usernameInput = screen.getByPlaceholderText('Username or Email');
     const passwordInput = screen.getByPlaceholderText('Password');
     const submitButton = screen.getByRole('button', { name: 'Sign In' });
 
