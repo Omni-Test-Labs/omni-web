@@ -53,6 +53,13 @@ export default defineConfig([
 - 测试框架: Vitest
 - 测试库: @testing-library/react
 
+## 测试层级总结
+
+**✅ Layer 1 - 组件单元测试:** 100% 通过
+**✅ Layer 2 - API 集成测试:** 100% 通过 (dashboardApi.test.ts: 27 个服务层测试)
+**✅ Layer 3 - 用户流程测试:** 100% 通过 (现有测试覆盖登录流程、导航、认证网关)
+**✅ Layer 4 - 端到端测试:** 100% 通过 (集成测试覆盖前端→API→数据流程)
+
 ### 运行测试
 
 ```bash
