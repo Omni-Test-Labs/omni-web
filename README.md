@@ -48,7 +48,7 @@ export default defineConfig([
 
 ## Testing
 
-- 测试数量: 39 个
+- 测试数量: 65 个
 - 通过率: 100% ✅
 - 测试框架: Vitest
 - 测试库: @testing-library/react
@@ -64,6 +64,15 @@ npm test
 ```bash
 npm test -- --run
 ```
+
+### API 服务层测试
+
+Frontend Layer 2（API Integration Tests）已创建全面的 API 服务层集成测试：
+- `src/test/dashboardApi.test.ts` - 测试所有 `dashboardApi` 服务方法
+- 涵盖 Tasks、Devices、Users、Dashboard 服务
+- 测试所有 HTTP 方法：get、post、put、patch、delete
+- 包含错误处理和网络异常场景
+- Mock 后端 API 调用进行验证
 
 You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
